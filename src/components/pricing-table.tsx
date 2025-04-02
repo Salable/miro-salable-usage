@@ -73,7 +73,7 @@ export const PricingTable = ({userId}: {userId: string}) => {
             </div>
             <div className='flex items-end justify-center'>
               <div className='text-3xl mr-2'>
-                <span className='font-bold'>£1</span>
+                <span className='font-bold'>£0.50</span>
                 <span className='text-lg font-light'> / per credit</span>
               </div>
             </div>
@@ -87,8 +87,9 @@ export const PricingTable = ({userId}: {userId: string}) => {
 
       </div>
       <div className='mt-6 text-xs'>
-        <div>User plan - access on all boards for a single user</div>
-        <div>Board plan - access for all users on a single board</div>
+        <div>User plan - Access on all boards for a single user</div>
+        <div>Board plan - Access for all users on a single board. All users on the board will contribute to the board's subscription consumption.</div>
+        <div className='mt-2 font-bold'>If a user has their own subscription but is using the app on a board that is also subscribed the board usage will take priority.</div>
       </div>
     </div>
   )
@@ -165,7 +166,7 @@ const Loading = () => (
         </div>
         <div className='flex items-end justify-center'>
           <div className='text-3xl mr-2'>
-            <span className='font-bold'>£1</span>
+            <span className='font-bold'>£0.50</span>
             <span className='text-lg font-light'> / per credit</span>
           </div>
         </div>

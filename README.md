@@ -28,8 +28,8 @@ This Miro app demonstrates using [usage-based](https://www.salable.app/features/
 11. Click `Continue` to `Capabilities`.
 12. Create a capabilities called `circle`, `rectangle` and `triangle`. These will be used to lock features behind the license check in the demo app.
 13. Create Plan.
-14. Repeat the above steps for a `Shapes Board` plan but with the changes in the next steps. This plan will be a 'board' plan allowing all users on a single board access to the product.
-15. Set the monthly cost as `1` plan which will bill the customer £1 per credit consumed per month.
+14. Repeat the above steps for a `Shapes Board` plan but with the changes in the next steps. This plan will be a 'board' plan allowing all users on a single board access to the product. All users on the board will contribute to the board's subscription consumption. If a user has their own subscription but is using the app on a board that is also subscribed the board usage will take priority.
+15. Set the monthly cost as `0.50` plan which will bill the customer £0.50 per credit consumed per month.
 16. Select the existing capabilities `circle`, `triangle` and `rectangle`.
 
 ### Update Environment Variables

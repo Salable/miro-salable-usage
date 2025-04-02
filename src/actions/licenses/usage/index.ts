@@ -15,7 +15,7 @@ type CreateShapeArgs  = {
   shape: AllowedShapes;
 }
 
-export async function thing({userId, boardId, shape}: CreateShapeArgs): Promise<Result<null>> {
+export async function updateUsageAndCreateShape({userId, boardId, shape}: CreateShapeArgs): Promise<Result<null>> {
   try {
     const check = await salable.licenses.check({
       productUuid: salableProductUuid,

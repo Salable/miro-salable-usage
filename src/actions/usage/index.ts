@@ -29,7 +29,6 @@ export async function getUsageRecords({planUuid, subscriptionUuid, boardId}: {pl
 export async function getCurrentUsage(planUuid: string, boardId: string): Promise<Result<CurrentUsageRecord>> {
   try {
     const {userId} = initMiroAPI()
-    console.log(planUuid === salableBoardPlanUuid ? boardId : userId)
     const currentUsage = await salable.usage.getCurrentUsageRecord({
       granteeId: planUuid === salableBoardPlanUuid ? boardId : userId,
       planUuid

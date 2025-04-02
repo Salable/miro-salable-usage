@@ -8,7 +8,7 @@ import {Circle} from "./icons/circle";
 import {BoardInfo} from "@mirohq/websdk-types/stable/api/board";
 import LoadingSpinner from "./loading-spinner";
 import {getCreditsForShape} from "../utils/getCreditsForShape";
-import {thing} from "../actions/licenses/usage";
+import {updateUsageAndCreateShape} from "../actions/licenses/usage";
 
 const shapes: AllowedShapes[] = ['rectangle', 'triangle', 'circle']
 
@@ -106,7 +106,7 @@ const AddShapeButton = ({shape, boardId, userId, hasCapability}: {shape: Allowed
   const handleClick = async () => {
     try {
       setIsCreatingShape(true)
-      await thing({userId, boardId, shape})
+      await updateUsageAndCreateShape({userId, boardId, shape})
       setIsCreatingShape(false)
     } catch (e) {
       setIsCreatingShape(false)

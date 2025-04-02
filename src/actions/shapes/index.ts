@@ -28,7 +28,7 @@ export const createShape = async (boardId: string, shape: AllowedShapes): Promis
     console.log(e)
     return {
       data: null,
-      error: 'Failed to verify board owner'
+      error: 'Failed to create shape'
     }
   }
 }
