@@ -25,12 +25,12 @@ This Miro app demonstrates using [usage-based](https://www.salable.app/features/
 8. Currencies will then appear, input the cost as `0.50` which will bill a customer £0.50 for every credit they consume every month.
 9. Continue to `Assign values`.
 10. This is section is for assigning feature values that can be used on pricing tables. This is not required to get set up.
-11. Click `Continue` to `Capabilities`.
-12. Create a capabilities called `circle`, `rectangle` and `triangle`. These will be used to lock features behind the license check in the demo app.
+11. Click `Continue` to `Features`.
+12. Create a boolean features called `circle`, `rectangle` and `triangle`. These will be used to lock features behind the entitlement check in the demo app.
 13. Create Plan.
 14. Repeat the above steps for a `Shapes Board` plan but with the changes in the next steps. This plan will be a 'board' plan allowing all users on a single board access to the product. All users on the board will contribute to the board's subscription consumption. If a user has their own subscription but is using the app on a board that is also subscribed the board usage will take priority.
 15. Set the monthly cost as `0.50` plan which will bill the customer £0.50 per credit consumed per month.
-16. Select the existing capabilities `circle`, `triangle` and `rectangle`.
+16. Select the existing features `circle`, `triangle` and `rectangle`.
 
 ### Update Environment Variables
 
@@ -63,10 +63,6 @@ This Miro app demonstrates using [usage-based](https://www.salable.app/features/
   **Client ID** and **Client secret** values: you'll need to enter these values
   in step 4 below.
 - Go to **App URL** and enter the following URL: `http://localhost:3000`
-- Go to **Redirect URI for OAuth2.0**, and enter the following redirect URL:
-  `http://localhost:3000/api/redirect`
-- Click **Options**. \
-  From the drop-down menu select **Use this URI for SDK authorization**.
 - Lastly, go to **Permissions**, and select the following permissions:
   - `board:read`
   - `board:write`

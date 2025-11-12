@@ -1,9 +1,9 @@
 'use client'
 import React, {useState} from "react";
-import {getCheckoutLink} from "../actions/checkout-link";
 import LoadingSpinner from "./loading-spinner";
 import {UserInfoWithEmail} from "@mirohq/websdk-types/stable/api/board";
 import {salableBoardPlanUuid} from "../app/constants";
+import axios from "axios";
 
 export const PlanButton = ({
   planUuid
@@ -18,27 +18,26 @@ export const PlanButton = ({
     setError(null)
     try {
       setIsFetchingUrl(true)
+      const token = await miro.board.getIdToken();
       const board = await miro.board.getInfo()
       const user = await miro.board.getUserInfo() as UserInfoWithEmail
-      const response = await getCheckoutLink(planUuid, {
-        granteeId: planUuid === salableBoardPlanUuid ? board.id :user.id,
-        owner: user.id,
-        email: user.email,
-        successUrl: `https://miro.com/app/board/${board.id}`,
-        cancelUrl: `https://miro.com/app/board/${board.id}`
-      })
-      if (response.error !== null) {
-        setError(response.error)
-        setIsFetchingUrl(false)
-        return
-      }
-      url = response.data.checkoutUrl
+      const resp = await axios.post(
+        '/api/checkout-link',
+        {
+          planUuid,
+          granteeId: planUuid === salableBoardPlanUuid ? board.id : user.id,
+          boardId: board.id,
+          email: user.email,
+        },
+        { headers: { Authorization: `Bearer ${token}` } }
+      )
+      url = resp.data.checkoutUrl
       setIsFetchingUrl(false)
       window.open(url, '_blank')
     } catch (e) {
       setIsFetchingUrl(false)
       console.log(e)
-    }
+    } 
     if (!url) {
       console.error('Failed to create checkout link')
     }
