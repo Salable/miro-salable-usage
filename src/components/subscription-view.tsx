@@ -17,14 +17,6 @@ export type SubscriptionExpandedPlanCurrency = Subscription & {
 };
 
 export const SubscriptionView = ({uuid}: {uuid: string}) => {
-  const [boardId, setBoardId] = useState<string | null>(null)
-  
-  React.useEffect(() => {
-    miro.board.getInfo().then((boardInfo) => {
-      setBoardId(boardInfo.id)
-    })
-  }, [])
-
   const { data, error, mutate } = useSWR<SubscriptionExpandedPlanCurrency>(
     `/api/subscriptions/${uuid}`
   )
@@ -52,7 +44,7 @@ export const SubscriptionView = ({uuid}: {uuid: string}) => {
           </div>
         </div>
       </div>
-      {subscription.status !== 'CANCELED' && boardId && subscription.plan?.uuid ? (
+      {subscription.status !== 'CANCELED' && subscription.plan?.uuid ? (
         <>
           <div className='mb-3'>
             <CurrentUsage planUuid={subscription.plan.uuid} />
