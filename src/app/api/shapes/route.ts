@@ -72,9 +72,9 @@ export const POST = withAuth(async (state: State, request: NextRequest) => {
     const features = check?.features;
     const hasUserLicense = features?.find((f) => f.feature === 'shapes_user');
     const hasBoardLicense = features?.find((f) => f.feature === 'shapes_board');
-    const hasShapeCapability = features?.find((f) => f.feature === shape);
+    const hasShapeFeature = features?.find((f) => f.feature === shape);
 
-    if (!hasUserLicense && !hasBoardLicense || !hasShapeCapability) {
+    if (!hasUserLicense && !hasBoardLicense || !hasShapeFeature) {
       return new Response(JSON.stringify({ error: "Unauthorised" }), {
         status: 403,
         headers: { "Content-Type": "application/json" },

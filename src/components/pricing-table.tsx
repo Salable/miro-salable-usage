@@ -55,7 +55,7 @@ export const PricingTable = () => {
             <span className='text-xs font-light'>(per month)</span>
           </div>
           <UserPlanPricingTableButton
-            isSubscribed={!!check?.features?.some((c) => c.feature === 'shapes_user')}
+            isSubscribed={check?.features?.some((c) => c.feature === 'shapes_user') ?? false}
           />
         </div>
 
@@ -78,7 +78,7 @@ export const PricingTable = () => {
             <span className='text-xs font-light'>(per month)</span>
           </div>
           <BoardPlanPricingTableButton
-            isSubscribed={!!check?.features?.some((c) => c.feature === 'shapes_board')}
+            isSubscribed={check?.features?.some((c) => c.feature === 'shapes_board') ?? false}
           />
         </div>
 

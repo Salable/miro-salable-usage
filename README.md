@@ -17,20 +17,18 @@ This Miro app demonstrates using [usage-based](https://www.salable.app/features/
 
 1. Go to the `Plans` tab on the sidebar and select `Create Plan`
 2. Set the plan name as `Shapes User` and optionally provide a description. This plan will be a 'user' plan giving access to the product for a user on all boards but no other users on the team will be able to use it.
-3. Press `Continue` to configure `License Type` information.
-4. For the type of plan select `Standard`.
-5. Select `Month` for subscription cycle.
-6. Select `Usage` license type.
-7. Select `Paid` to make it a paid plan.
-8. Currencies will then appear, input the cost as `0.50` which will bill a customer £0.50 for every credit they consume every month.
-9. Continue to `Assign values`.
-10. This is section is for assigning feature values that can be used on pricing tables. This is not required to get set up.
-11. Click `Continue` to `Features`.
-12. Create a boolean features called `circle`, `rectangle` and `triangle`. These will be used to lock features behind the entitlement check in the demo app.
-13. Create Plan.
-14. Repeat the above steps for a `Shapes Board` plan but with the changes in the next steps. This plan will be a 'board' plan allowing all users on a single board access to the product. All users on the board will contribute to the board's subscription consumption. If a user has their own subscription but is using the app on a board that is also subscribed the board usage will take priority.
-15. Set the monthly cost as `0.50` plan which will bill the customer £0.50 per credit consumed per month.
-16. Select the existing features `circle`, `triangle` and `rectangle`.
+3. Select `Usage` for pricing model.
+4. Select `Month` for subscription cycle.
+5. Select `Paid` to make it a paid plan.
+6. Currencies will then appear, input the cost as `0.50` which will bill a customer £0.50 for every credit they consume every month.
+7. Click `Next` to proceed to Features.
+8. This section is for creating features and assigning values to plans.
+9. Click `Create Feature`.
+10. Create a boolean features called `circle`, `rectangle` and `triangle`. These will be used to lock features behind the entitlement check in the demo app.
+11. Create Plan.
+12. Repeat the above steps for a `Shapes Board` plan but with the changes in the next steps. This plan will be a 'board' plan allowing all users on a single board access to the product. All users on the board will contribute to the board's subscription consumption. If a user has their own subscription but is using the app on a board that is also subscribed the board usage will take priority.
+13. Set the monthly cost as `0.50` plan which will bill the customer £0.50 per credit consumed per month.
+14. Select the existing features `circle`, `triangle` and `rectangle`.
 
 ### Update Environment Variables
 
