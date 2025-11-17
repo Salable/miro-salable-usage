@@ -32,6 +32,7 @@ export const PricingTable = () => {
   }, []);
   if (error) return <FetchError error={error} />
   if (loading) return <Loading />
+  if (!check) return <FetchError error={'Failed to fetch entitlements.'} />
   return (
     <div>
       <div className='md:grid md:grid-cols-3 md:gap-6 text-center'>
@@ -55,7 +56,7 @@ export const PricingTable = () => {
             <span className='text-xs font-light'>(per month)</span>
           </div>
           <UserPlanPricingTableButton
-            isSubscribed={check?.features?.some((c) => c.feature === 'shapes_user') ?? false}
+            isSubscribed={check.features?.some((c) => c.feature === 'shapes_user')}
           />
         </div>
 
@@ -78,7 +79,7 @@ export const PricingTable = () => {
             <span className='text-xs font-light'>(per month)</span>
           </div>
           <BoardPlanPricingTableButton
-            isSubscribed={check?.features?.some((c) => c.feature === 'shapes_board') ?? false}
+            isSubscribed={check.features?.some((c) => c.feature === 'shapes_board')}
           />
         </div>
 
