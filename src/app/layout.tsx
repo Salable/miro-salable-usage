@@ -3,6 +3,7 @@ import React, {PropsWithChildren} from 'react';
 import Script from 'next/script';
 import {MiroSDKInit} from '../components/SDKInit';
 import {Footer} from "../components/footer";
+import {SWRConfigProvider} from "../providers/swr-config";
 
 export default async function RootLayout({children}: PropsWithChildren) {
   return (
@@ -13,12 +14,14 @@ export default async function RootLayout({children}: PropsWithChildren) {
         strategy="beforeInteractive"
       />
       <MiroSDKInit />
-      <div className='flex flex-col min-h-screen w-full'>
-        <div className="grid">
-          <div className="cs1 ce12">{children}</div>
+      <SWRConfigProvider>
+        <div className='flex flex-col min-h-screen w-full'>
+          <div className="grid">
+            <div className="cs1 ce12">{children}</div>
+          </div>
+          <Footer />
         </div>
-        <Footer />
-      </div>
+      </SWRConfigProvider>
     </body>
     </html>
   );

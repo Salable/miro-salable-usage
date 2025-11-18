@@ -1,37 +1,30 @@
 'use client'
 import {CancelPlanButton} from "./cancel-plan-button";
 import {FetchError} from "./fetch-error";
-import React, {useEffect, useState} from "react";
-import {getOneSubscription, SubscriptionExpandedPlanCurrency} from "../actions/subscriptions";
+import React, {useState, useEffect} from "react";
 import {notFound} from "next/navigation";
 import Link from "next/link";
-import {getCurrentUsage} from "../actions/usage";
 import {format} from "date-fns";
-import {CurrentUsageRecord} from "@salable/node-sdk/dist/src/types";
+import {CurrentUsageRecord, Plan, PlanCurrency, Subscription} from "@salable/node-sdk/dist/src/types";
 import {UsageRecords} from "./usage-records";
+import useSWR from 'swr';
+import axios from "axios";
+
+export type SubscriptionExpandedPlanCurrency = Subscription & {
+  plan: Plan & {
+    currencies: PlanCurrency[];
+  };
+};
 
 export const SubscriptionView = ({uuid}: {uuid: string}) => {
-  const [loading, setLoading] = useState(true)
-  const [boardId, setBoardId] = useState<string | null>(null)
-  const [subscription, setSubscription] = useState<SubscriptionExpandedPlanCurrency | null>(null)
-  const [subscriptionError, setSubscriptionError] = useState<string | null>(null)
-  useEffect(() => {
-    async function fetchData() {
-      try {
-        const boardInfo = await miro.board.getInfo()
-        setBoardId(boardInfo.id)
-        const data = await getOneSubscription(uuid, boardInfo.id)
-        if (data.data) setSubscription(data.data)
-        if (data.error) setSubscriptionError(data.error)
-        setLoading(false)
-      } catch (e) {
-        setLoading(false)
-        console.log(e)
-      }
-    }
-    fetchData()
-  }, []);
-  if (loading) return <Loading />
+  const { data, error, mutate } = useSWR<SubscriptionExpandedPlanCurrency>(
+    `/api/subscriptions/${uuid}`
+  )
+
+  const subscription = data
+  const subscriptionError = error?.message
+
+  if (!data && !error) return <Loading />
   if (subscriptionError) return <FetchError error={subscriptionError}/>
   if (!subscription) return notFound()
   return (
@@ -47,16 +40,16 @@ export const SubscriptionView = ({uuid}: {uuid: string}) => {
         <div className='flex justify-between items-end mb-3'>
           <div>
             <div className='text-gray-500'>Plan</div>
-            <div className='text-xl'>{subscription.plan.displayName}</div>
+            <div className='text-xl'>{subscription.plan?.displayName}</div>
           </div>
         </div>
       </div>
-      {subscription.status !== 'CANCELED' && boardId ? (
+      {subscription.status !== 'CANCELED' && subscription.plan?.uuid ? (
         <>
           <div className='mb-3'>
             <CurrentUsage planUuid={subscription.plan.uuid} />
           </div>
-          <CancelPlanButton subscriptionUuid={uuid}/>
+          <CancelPlanButton subscriptionUuid={uuid} mutate={mutate}/>
         </>
       ) : null}
       <div className='mt-6'>
@@ -74,20 +67,31 @@ const CurrentUsage = ({planUuid}: {planUuid: string}) => {
   const [currentUsage, setCurrentUsage] = useState<CurrentUsageRecord | null>(null)
   const [error, setError] = useState<string | null>(null)
   useEffect(() => {
+    if (!planUuid) {
+      setLoading(false)
+      setError('Plan UUID is required')
+      return
+    }
     async function fetchData() {
       try {
-        const boardInfo = await miro.board.getInfo()
-        const data = await getCurrentUsage(planUuid, boardInfo.id);
-        if (data.data) setCurrentUsage(data.data)
-        if (data.error) setError(data.error)
+        const token = await miro.board.getIdToken();
+        const response = await axios.get(`/api/usage/current?planUuid=${planUuid}`, {
+          headers: { Authorization: `Bearer ${token}` }
+        })
+        if (response.data?.error) {
+          setError(response.data.error)
+        } else if (response.data) {
+          setCurrentUsage(response.data)
+        }
         setLoading(false)
       } catch (e) {
         setLoading(false)
         console.log(e)
+        setError('Failed to fetch current usage')
       }
     }
     fetchData()
-  }, []);
+  }, [planUuid]);
   if (loading) return <CurrentUsageLoading />
   if (error) return <FetchError error={error}/>
   if (!currentUsage) {

@@ -1,9 +1,22 @@
 'use client'
 import Link from "next/link";
 import React, {useEffect, useState} from "react";
-import {UserInfoWithEmail} from "@mirohq/websdk-types/stable/api/board";
-import {getAllSubscriptions, SubscriptionExpandedPlan} from "../actions/subscriptions";
 import {FetchError} from "./fetch-error";
+import axios from "axios";
+import {Subscription} from "@salable/node-sdk/dist/src/types";
+
+export type SubscriptionExpandedPlan = Subscription & {
+  plan: {
+    displayName: string;
+    licenseType: string;
+  };
+};
+
+export type GetAllSubscriptionsExpandedPlan = {
+  first: string;
+  last: string;
+  data: SubscriptionExpandedPlan[];
+};
 
 export const SubscriptionsList = () => {
   const [loading, setLoading] = useState(true)
@@ -13,10 +26,11 @@ export const SubscriptionsList = () => {
   useEffect(() => {
     async function fetchData() {
       try {
-        const userData = await miro.board.getUserInfo() as UserInfoWithEmail
-        const subscriptionData = await getAllSubscriptions(userData.email)
-        if (subscriptionData.data?.data) setSubscriptions(subscriptionData.data.data)
-        if (subscriptionData.error) setError(subscriptionData.error)
+        const token = await miro.board.getIdToken();
+        const response = await axios.get(`/api/subscriptions`, {
+          headers: { Authorization: `Bearer ${token}` }
+        })
+        if (response.data?.data) setSubscriptions(response.data.data)
         setLoading(false)
       } catch (e) {
         setLoading(false)

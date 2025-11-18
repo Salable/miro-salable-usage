@@ -5,25 +5,23 @@ import {Circle} from "./icons/circle";
 import React, {useEffect, useState} from "react";
 import {PlanButton} from "./plan-button";
 import {salableUserPlanUuid, salableBoardPlanUuid} from "../app/constants";
-import {CheckLicensesCapabilitiesResponse} from "@salable/node-sdk/dist/src/types";
-import {licenseCheck} from "../actions/licenses/check";
-import {isBoardOwner} from "../actions/board";
+import {EntitlementCheck} from "@salable/node-sdk/dist/src/types";
 import {FetchError} from "./fetch-error";
+import axios from "axios";
 
-export const PricingTable = ({userId}: {userId: string}) => {
-  const [check, setCheck] = useState<CheckLicensesCapabilitiesResponse | null>(null)
-  const [isOwner, setIsOwner] = useState<boolean>(false)
+export const PricingTable = () => {
+  const [check, setCheck] = useState<EntitlementCheck | null>(null)
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
   useEffect(() => {
     async function fetchData() {
       try {
-        const boardInfo = await miro.board.getInfo()
-        const isBoardOwnerData = await isBoardOwner(boardInfo.id)
-        if (isBoardOwnerData.error) setError(isBoardOwnerData.error)
-        if (isBoardOwnerData.data !== null) setIsOwner(isBoardOwnerData.data)
-        const data = await licenseCheck([userId, boardInfo.id])
-        if (data.data) setCheck(data.data)
+        const token = await miro.board.getIdToken();
+        const response = await axios.get(`/api/entitlements/check`, {
+          headers: { Authorization: `Bearer ${token}` }
+        })
+        if (response.data) setCheck(response.data)
+        if (response.data?.error) setError(response.data.error)
         setLoading(false)
       } catch (e) {
         setLoading(false)
@@ -34,6 +32,7 @@ export const PricingTable = ({userId}: {userId: string}) => {
   }, []);
   if (error) return <FetchError error={error} />
   if (loading) return <Loading />
+  if (!check) return <FetchError error={'Failed to fetch entitlements.'} />
   return (
     <div>
       <div className='md:grid md:grid-cols-3 md:gap-6 text-center'>
@@ -57,7 +56,7 @@ export const PricingTable = ({userId}: {userId: string}) => {
             <span className='text-xs font-light'>(per month)</span>
           </div>
           <UserPlanPricingTableButton
-            isSubscribed={!!check?.capabilities.find((c) => c.capability === 'shapes_user')}
+            isSubscribed={check.features?.some((c) => c.feature === 'shapes_user')}
           />
         </div>
 
@@ -80,8 +79,7 @@ export const PricingTable = ({userId}: {userId: string}) => {
             <span className='text-xs font-light'>(per month)</span>
           </div>
           <BoardPlanPricingTableButton
-            isBoardOwner={isOwner}
-            isSubscribed={!!check?.capabilities.find((c) => c.capability === 'shapes_board')}
+            isSubscribed={check.features?.some((c) => c.feature === 'shapes_board')}
           />
         </div>
 
@@ -109,22 +107,13 @@ const UserPlanPricingTableButton = ({isSubscribed}: {isSubscribed: boolean}) => 
   return <PlanButton planUuid={salableUserPlanUuid} />
 }
 
-const BoardPlanPricingTableButton = ({isBoardOwner, isSubscribed}: {isBoardOwner: boolean; isSubscribed: boolean}) => {
+const BoardPlanPricingTableButton = ({isSubscribed}: {isSubscribed: boolean}) => {
   if (isSubscribed) {
     return (
       <div
         className='p-4 rounded-md leading-none font-light text-sm transition flex items-center justify-center w-full bg-white text-blue-700 border-2 border-solid border-blue-700'
       >
         Subscribed
-      </div>
-    )
-  }
-  if (!isBoardOwner) {
-    return (
-      <div
-        className='p-4 rounded-md leading-none font-light text-sm transition flex items-center justify-center w-full bg-white text-blue-700 border-2 border-solid border-blue-700'
-      >
-        Contact board owner
       </div>
     )
   }

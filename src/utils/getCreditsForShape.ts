@@ -1,14 +1,16 @@
-import {AllowedShapes} from "../actions/shapes";
+import { AllowedShapes } from '../components/shapes';
 
-export function getCreditsForShape(shape: AllowedShapes){
+export type { AllowedShapes };
+
+export function getCreditsForShape(shape: AllowedShapes) {
   switch (shape) {
     case 'rectangle':
-      return 1
+      return 1;
     case 'triangle':
-      return 2
+      return 2;
     case 'circle':
-      return 3
+      return 3;
     default:
-      throw new Error(`Unknown shape: ${shape}`)
+      throw new Error(`Unknown shape: ${shape}`);
   }
 }
