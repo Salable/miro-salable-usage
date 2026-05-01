@@ -1,3 +1,6 @@
+> [!CAUTION]
+> This demo was made for Legacy Salable and won't work correctly with the new version of the platform.
+
 This Miro app demonstrates using [usage-based](https://www.salable.app/features/usage-based-pricing) billing with Salable.
 
 ## Configure Salable
