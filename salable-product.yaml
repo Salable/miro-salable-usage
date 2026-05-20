@@ -1,0 +1,80 @@
+version: s1-1.0.0
+product:
+  displayName: Miro usage Product
+  description: ''
+  paid: true
+  features:
+    - displayName: circle
+      variableName: circle
+      description: ''
+      visibility: private
+      valueType: boolean
+      defaultValue: 'true'
+      showUnlimited: false
+      sortOrder: 0
+    - displayName: rectangle
+      variableName: rectangle
+      description: ''
+      visibility: private
+      valueType: boolean
+      defaultValue: 'true'
+      showUnlimited: false
+      sortOrder: 1
+    - displayName: triangle
+      variableName: triangle
+      description: ''
+      visibility: private
+      valueType: boolean
+      defaultValue: 'true'
+      showUnlimited: false
+      sortOrder: 2
+  currencies:
+    - shortName: USD
+      defaultCurrency: true
+  plans:
+    - displayName: Board
+      description: ''
+      visibility: public
+      pricingType: paid
+      licenseType: metered
+      evalDays: 0
+      interval: month
+      length: 1
+      perSeatAmount: 1
+      maxSeatAmount: -1
+      features:
+        - variableName: circle
+          value: 'true'
+          isUnlimited: false
+        - variableName: rectangle
+          value: 'true'
+          isUnlimited: false
+        - variableName: triangle
+          value: 'true'
+          isUnlimited: false
+      currencies:
+        - shortName: USD
+          price: 50
+    - displayName: Shapes User
+      description: ''
+      visibility: public
+      pricingType: paid
+      licenseType: metered
+      evalDays: 0
+      interval: month
+      length: 1
+      perSeatAmount: 1
+      maxSeatAmount: -1
+      features:
+        - variableName: circle
+          value: 'true'
+          isUnlimited: false
+        - variableName: rectangle
+          value: 'true'
+          isUnlimited: false
+        - variableName: triangle
+          value: 'true'
+          isUnlimited: false
+      currencies:
+        - shortName: USD
+          price: 50
